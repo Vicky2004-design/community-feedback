@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社群回饋 - 流浪犬政策研究</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #64c8ff 0%, #4ade80 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            color: #a0a0a0;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .form-section, .visualization-section {
+            background: rgba(30, 30, 40, 0.8);
+            border: 1px solid rgba(100, 200, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: #64c8ff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+            color: #c0c0c0;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .star {
+            font-size: 32px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.2s ease;
+        }
+
+        .star:hover, .star.active {
+            color: #fbbf24;
+            transform: scale(1.2);
+        }
+
+        .feedback-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .feedback-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feedback-option input {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .feedback-option label {
+            cursor: pointer;
+            margin: 0;
+            flex: 1;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(100, 200, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(50, 50, 60, 0.8);
+            color: #e0e0e0;
+            font-family: inherit;
+            font-size: 0.95em;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        textarea::placeholder {
+            color: #666;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: white;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(74, 222, 128, 0.3);
+        }
+
+        .close-btn {
+            background: rgba(100, 100, 110, 0.5);
+            color: #e0e0e0;
+            border: 1px solid rgba(100, 100, 110, 0.7);
+        }
+
+        .close-btn:hover {
+            background: rgba(100, 100, 110, 0.7);
+        }
+
+        .success-message {
+            display: none;
+            background: rgba(74, 222, 128, 0.2);
+            border: 1px solid #4ade80;
+            border-radius: 8px;
+            padding: 15px;
+            color: #4ade80;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .visualization-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: rgba(20, 20, 30, 0.6);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .stats {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(100, 200, 255, 0.1);
+            border-radius: 8px;
+            font-size: 0.9em;
+            color: #64c8ff;
+        }
+
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .form-section, .visualization-section {
+                padding: 20px;
+            }
+
+            .star {
+                font-size: 28px;
+            }
+
+            .visualization-container {
+                height: 300px;
+            }
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: #64c8ff;
+            text-decoration: none;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #4ade80;
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="https://wujei50191.wixsite.com/ccucom" class="back-link">← 返回主網站</a>
+
+        <div class="header">
+            <h1>社群回饋</h1>
+            <p>分享您對我們研究網站與互動遊戲的想法</p>
+        </div>
+
+        <div class="content">
+            <!-- 左側：回饋表單 -->
+            <div class="form-section">
+                <h2 class="section-title">分享您的想法</h2>
+                
+                <div class="success-message" id="successMessage">
+                    感謝您的回饋！您的意見對我們很重要。
+                </div>
+
+                <div id="feedbackForm">
+                    <!-- 星評 -->
+                    <div class="form-group">
+                        <label>您的評分</label>
+                        <div class="star-rating" id="starRating">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                    </div>
+
+                    <!-- 多選項 -->
+                    <div class="form-group">
+                        <label>您的看法（可複選）</label>
+                        <div class="feedback-options">
+                            <div class="feedback-option">
+                                <input type="checkbox" id="opt1" value="內容準確">
+                                <label for="opt1">內容準確</label>
+                            </div>
+                            <div class="feedback-option">
+                                <input type="checkbox" id="opt2" value="易於理解">
+                                <label for="opt2">易於理解</label>
+                            </div>
+                            <div class="feedback-option">
+                                <input type="checkbox" id="opt3" value="設計風格">
+                                <label for="opt3">設計風格</label>
+                            </div>
+                            <div class="feedback-option">
+                                <input type="checkbox" id="opt4" value="需要改進">
+                                <label for="opt4">需要改進</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 評論區 -->
+                    <div class="form-group">
+                        <label for="feedbackText">詳細想法</label>
+                        <textarea id="feedbackText" placeholder="請分享您的具體想法..."></textarea>
+                    </div>
+
+                    <!-- 按鈕 -->
+                    <div class="button-group">
+                        <button class="submit-btn" id="submitBtn">提交回饋</button>
+                        <button class="close-btn" id="closeBtn">清空</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右側：視覺化 -->
+            <div class="visualization-section">
+                <h2 class="section-title">社群聲音</h2>
+                <div class="visualization-container">
+                    <canvas id="feedbackCanvas"></canvas>
+                </div>
+                <div class="stats" id="feedbackStats">
+                    總回饋數: 0 | 平均評分: 0★
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedRating = 0;
+        let bubbles = [];
+
+        const feedbackForm = document.getElementById('feedbackForm');
+        const successMessage = document.getElementById('successMessage');
+        const starRating = document.getElementById('starRating');
+        const submitBtn = document.getElementById('submitBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const canvas = document.getElementById('feedbackCanvas');
+        const ctx = canvas.getContext('2d');
+        const feedbackStats = document.getElementById('feedbackStats');
+
+        // Canvas 尺寸
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // 初始化圓圈
+        function initializeBubbles() {
+            const allFeedback = JSON.parse(localStorage.getItem('communityFeedback') || '[]');
+            bubbles = [];
+
+            const categoryColors = {
+                '內容準確': '#4ade80',
+                '易於理解': '#64c8ff',
+                '設計風格': '#fbbf24',
+                '需要改進': '#f87171'
+            };
+
+            allFeedback.forEach((feedback) => {
+                const color = feedback.options.length > 0 
+                    ? categoryColors[feedback.options[0]] 
+                    : '#64c8ff';
+                
+                const bubble = {
+                    x: Math.random() * (canvas.width - 60) + 30,
+                    y: Math.random() * (canvas.height - 60) + 30,
+                    vx: (Math.random() - 0.5) * 2,
+                    vy: (Math.random() - 0.5) * 2,
+                    radius: 15 + feedback.rating * 5,
+                    color: color,
+                    rating: feedback.rating,
+                    text: feedback.text.substring(0, 15),
+                    feedback: feedback
+                };
+                bubbles.push(bubble);
+            });
+
+            updateStats();
+        }
+
+        // 更新統計資訊
+        function updateStats() {
+            const total = bubbles.length;
+            const avgRating = bubbles.length > 0 
+                ? (bubbles.reduce((sum, b) => sum + b.rating, 0) / bubbles.length).toFixed(1)
+                : 0;
+            feedbackStats.textContent = `總回饋數: ${total} | 平均評分: ${avgRating}★`;
+        }
+
+        // 動畫迴圈
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            bubbles.forEach((bubble) => {
+                bubble.x += bubble.vx;
+                bubble.y += bubble.vy;
+
+                if (bubble.x - bubble.radius < 0 || bubble.x + bubble.radius > canvas.width) {
+                    bubble.vx *= -1;
+                    bubble.x = Math.max(bubble.radius, Math.min(canvas.width - bubble.radius, bubble.x));
+                }
+                if (bubble.y - bubble.radius < 0 || bubble.y + bubble.radius > canvas.height) {
+                    bubble.vy *= -1;
+                    bubble.y = Math.max(bubble.radius, Math.min(canvas.height - bubble.radius, bubble.y));
+                }
+
+                // 繪製圓圈
+                ctx.fillStyle = bubble.color;
+                ctx.beginPath();
+                ctx.arc(bubble.x, bubble.y, bubble.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // 繪製星評
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(bubble.rating + '★', bubble.x, bubble.y - 8);
+
+                // 繪製文字
+                ctx.font = '11px Arial';
+                ctx.fillText(bubble.text, bubble.x, bubble.y + 8);
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        // 星評選擇
+        const stars = starRating.querySelectorAll('.star');
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                selectedRating = star.dataset.value;
+                stars.forEach(s => {
+                    if (s.dataset.value <= selectedRating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // 提交表單
+        submitBtn.addEventListener('click', () => {
+            if (selectedRating === 0) {
+                alert('請先選擇評分');
+                return;
+            }
+
+            const selectedOptions = Array.from(document.querySelectorAll('.feedback-option input:checked'))
+                .map(input => input.value);
+            const feedbackText = document.getElementById('feedbackText').value || '（無留言）';
+
+            const feedbackData = {
+                rating: parseInt(selectedRating),
+                options: selectedOptions,
+                text: feedbackText,
+                timestamp: new Date().toISOString()
+            };
+
+            let allFeedback = JSON.parse(localStorage.getItem('communityFeedback') || '[]');
+            allFeedback.push(feedbackData);
+            localStorage.setItem('communityFeedback', JSON.stringify(allFeedback));
+
+            initializeBubbles();
+
+            feedbackForm.style.display = 'none';
+            successMessage.classList.add('show');
+
+            setTimeout(() => {
+                feedbackForm.style.display = 'block';
+                successMessage.classList.remove('show');
+                resetForm();
+            }, 2000);
+        });
+
+        // 清空表單
+        closeBtn.addEventListener('click', resetForm);
+
+        function resetForm() {
+            selectedRating = 0;
+            stars.forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.feedback-option input').forEach(input => input.checked = false);
+            document.getElementById('feedbackText').value = '';
+        }
+
+        // 初始化
+        initializeBubbles();
+        animate();
+    </script>
+</body>
+</html>
