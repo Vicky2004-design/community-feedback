@@ -362,6 +362,52 @@
             }
         }
 
+        /* 浮動按鈕樣式 */
+        .floating-feedback-btn {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ff88 0%, #00ccff 50%, #ffff00 100%);
+            border: 3px solid rgba(0, 255, 136, 0.6);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.8), 0 0 60px rgba(0, 255, 136, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .floating-feedback-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 50px rgba(0, 255, 136, 1), 0 0 80px rgba(0, 255, 136, 0.6), 0 0 100px rgba(255, 255, 0, 0.4);
+        }
+
+        .floating-feedback-btn:active {
+            transform: scale(0.95);
+        }
+
+        .floating-feedback-btn svg {
+            width: 45px;
+            height: 45px;
+            fill: #000;
+            filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.8));
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(0, 255, 136, 0.8), 0 0 60px rgba(0, 255, 136, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(0, 255, 136, 1), 0 0 80px rgba(0, 255, 136, 0.6), 0 0 100px rgba(255, 255, 0, 0.3);
+            }
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.8rem;
@@ -374,10 +420,29 @@
             .stats {
                 grid-template-columns: 1fr;
             }
+
+            .floating-feedback-btn {
+                width: 70px;
+                height: 70px;
+                bottom: 30px;
+                right: 30px;
+                box-shadow: 0 0 25px rgba(0, 255, 136, 0.8), 0 0 50px rgba(0, 255, 136, 0.4);
+            }
+
+            .floating-feedback-btn svg {
+                width: 38px;
+                height: 38px;
+            }
         }
     </style>
 </head>
 <body>
+    <a href="https://wujei50191.wixsite.com/ccucom" class="floating-feedback-btn" title="返回主網站">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+    </a>
+
     <div class="container">
         <div class="header">
             <a href="https://wujei50191.wixsite.com/ccucom" class="back-link-header">← 返回主網站</a>
