@@ -82,6 +82,77 @@
             margin-bottom: 30px;
         }
 
+        .thinking-section {
+            background: rgba(30, 30, 30, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .thinking-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #f5f5f5;
+            font-weight: 600;
+        }
+
+        .thinking-section p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #d0d0d0;
+            margin-bottom: 12px;
+        }
+
+        .thinking-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .thinking-questions {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .thinking-questions h4 {
+            font-size: 0.95rem;
+            color: #aaa;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .question-item {
+            font-size: 0.9rem;
+            color: #c0c0c0;
+            margin-bottom: 8px;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .question-item:before {
+            content: "？";
+            position: absolute;
+            left: 0;
+            color: #888;
+        }
+
+        .form-intro {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-intro p {
+            font-size: 0.95rem;
+            color: #bbb;
+            line-height: 1.6;
+        }
+
         .feedback-form {
             background: rgba(30, 30, 30, 0.9);
             backdrop-filter: blur(10px);
@@ -408,7 +479,23 @@
             <p>您的意見幫助我們更好地理解與呈現臺灣遊蕩犬治理議題</p>
         </div>
 
+        <div class="thinking-section">
+            <h3>💭 停下來思考</h3>
+            <p>看完這個故事和分析後，您有什麼想法？</p>
+            <p>遊蕩犬問題沒有簡單的答案。不同的人有不同的觀點和關切。透過您的回饋，我們可以了解社會各界如何看待這個議題。</p>
+            <div class="thinking-questions">
+                <h4>以下問題可能幫助您思考：</h4>
+                <div class="question-item">零撲殺政策是否真的解決了問題？</div>
+                <div class="question-item">TNVR 執行的主要挑戰是什麼？</div>
+                <div class="question-item">您認為應該如何平衡動物福利和公共安全？</div>
+                <div class="question-item">社會各界應該如何共同面對這個問題？</div>
+            </div>
+        </div>
+
         <div class="feedback-form">
+            <div class="form-intro">
+                <p>📝 分享您的想法</p>
+            </div>
             <form id="feedbackForm">
                 <div class="form-group">
                     <label>整體評分</label>
@@ -438,6 +525,7 @@
 
                 <button type="submit" class="submit-btn">提交回饋</button>
             </form>
+            <p style="text-align: center; margin-top: 15px; font-size: 0.85rem; color: #888;">您的回饋將幫助我們更好地理解這個議題的多元觀點</p>
         </div>
 
         <div class="visualization-section">
